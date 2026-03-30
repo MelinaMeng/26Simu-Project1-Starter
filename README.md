@@ -7,7 +7,7 @@
 > 👉 **[点击此处查询 P1 任务规格书与计分板](https://github.com/booblu/26Simu-Management-Modeling/blob/main/03_Assignments/Project1_V3_State_Machine.md)**
 > 👉 **[点击此处打开避坑保命的 Math Cheat Sheet](https://github.com/booblu/26Simu-Management-Modeling/blob/main/04_Resources/Project1_V3_Math_CheatSheet.md)**
 
-## 🎯  (Your Sandbox Mission)
+## 
 1. 把你在主库里学到的底层物理知识（Q64.96 定点数算法）移植进 `src/simulator.py` 里的那个空骨架中。
 2. 疯狂地在 `tests/test_invariants.py` 中写能够把系统搞死（触发底板击穿）的独立红线测试断言。
 3. 按照 `spec.yaml` 填写你做实验的初始环境与假设条件。
