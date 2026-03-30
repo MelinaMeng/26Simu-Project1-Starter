@@ -1,14 +1,75 @@
 model:
   name: "V3_State_Machine"
-  author: "CTO_Name_Here"
+  author: "CTO_Student"
+  description: "Uniswap V3 集中流动性池状态机模拟器"
+  version: "1.0.0"
 
 pool:
   asset_x: "ETH"
   asset_y: "USDC"
   fee_tier: 0.003
+  # 初始价格: 2500 USDC/ETH
+  # tick = log(2500) / log(1.0001) ≈ 193749
   initial_price: 2500
-  initial_liquidity: "1000000000000000000" # Wei 级别
+  initial_tick: 193749
+  # 初始流动性: 1000 ETH 等值 (以 wei 为单位)
+  initial_liquidity: "1000000000000000000000"
+  
+  # 流动性区间配置
+  tick_spacing: 60  # 0.3% 费率池的标准 tick 间距
+  tick_lower: 192000  # 约 2200 USDC/ETH
+  tick_upper: 195000  # 约 2800 USDC/ETH
+
+simulation:
+  # 实验参数
+  num_trades: 100
+  trade_size_range: [1000000000000000, 100000000000000000]  # 0.001 ETH 到 0.1 ETH
+  
+  # 滑点保护设置
+  max_slippage: 0.05  # 5%
+  
+  # 测试场景
+  scenarios:
+    - name: "正常交易"
+      description: "常规大小的交易，测试基本功能"
+      trade_multiplier: 1.0
+    
+    - name: "大额交易"
+      description: "大额交易，测试滑点保护"
+      trade_multiplier: 10.0
+    
+    - name: "极端价格"
+      description: "在极端价格下测试系统稳定性"
+      extreme_tick: 50000
+    
+    - name: "流动性枯竭"
+      description: "测试流动性极低时的系统行为"
+      min_liquidity: "1000000000000000"
 
 flags:
   use_bigint_core: true
   enable_high_freq_logs: false
+  strict_invariant_checks: true
+  log_level: "INFO"
+
+invariants:
+  # 红线不变量配置
+  zero_swap_no_change: true
+  balances_non_negative: true
+  xyk_invariant: true
+  price_monotonicity: true
+  slippage_protection: true
+  liquidity_consistency: true
+
+analysis:
+  # 分析指标
+  metrics:
+    - "price_impact"
+    - "slippage"
+    - "impermanent_loss"
+    - "fee_revenue"
+    - "liquidity_utilization"
+  
+  # 输出报告
+  output_formats: ["json", "csv", "markdown"]
+  generate_charts: true
